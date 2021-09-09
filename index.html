@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <title>olimanto</title>
+    <style>
+        td {
+            text-align: center
+        }
+    </style>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            function isInt(value) {
+                return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
+            }
+            document.dimensionesForm.txtAnchura.addEventListener("keyup", (event) => {
+                if (!isInt(document.dimensionesForm.txtAnchura.value)
+                    || document.dimensionesForm.txtAnchura.value < 1 || document.dimensionesForm.txtAnchura.value > 20) {
+                    document.dimensionesForm.txtAnchura.classList.add('is-invalid');
+                    document.dimensionesForm.txtAnchura.classList.remove('is-valid');
+                    document.getElementById("btnGenerar").disabled = true;
+                } else {
+                    document.dimensionesForm.txtAnchura.classList.add('is-valid');
+                    document.dimensionesForm.txtAnchura.classList.remove('is-invalid');
+                    document.getElementById("btnGenerar").disabled = false;
+                }
+            });
+            document.dimensionesForm.txtAltura.addEventListener("keyup", (event) => {
+                if (!isInt(document.dimensionesForm.txtAltura.value)
+                    || document.dimensionesForm.txtAltura.value < 1 || document.dimensionesForm.txtAltura.value > 20) {
+                    document.dimensionesForm.txtAltura.classList.add('is-invalid');
+                    document.dimensionesForm.txtAltura.classList.remove('is-valid');
+                    document.getElementById("btnGenerar").disabled = true;
+                } else {
+                    document.dimensionesForm.txtAltura.classList.add('is-valid');
+                    document.dimensionesForm.txtAltura.classList.remove('is-invalid');
+                    document.getElementById("btnGenerar").disabled = false;
+                }
+            });
+            document.getElementById('btnGenerar').addEventListener('click', () => {
+                document.getElementById("tabla").innerHTML = [...Array(parseInt(document.dimensionesForm.txtAnchura.value)).keys()].map(x => x + 1).map(y => [...Array(parseInt(document.dimensionesForm.txtAltura.value)).keys()].map(x => "<td>" + (x + 1) * y + "</td>")).map(z => "<tr>" + z.join(" ") + "</tr>").join(" ");
+                document.getElementById("btnBorrar").disabled = false;
+            });
+            document.getElementById('btnBorrar').addEventListener('click', () => {
+                document.getElementById("tabla").innerHTML = "";
+                document.getElementById("btnBorrar").disabled = true;
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <header class="row pb-3 mb-4 border-bottom justify-content-between">
+            <h3>Práctica DAW</h3>
+            <h3>Rafael Aznar - CIPFP Ausiàs March</h3>
+        </header>
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="text-center">
+                <h1 class="display-4 fw-bold mb-4">olimanto</h1>
+                <h6 class="text-muted text-monospace">Cuadrante de multiplicaciones dinámico</h6>
+                <h6 class="text-muted text-monospace">Procesamiento en entorno cliente con Javascript ES6</h6>
+                <h6 class="text-muted text-monospace">Con formulario generador de tabla y validaciones</h6>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <div class="col-4 mx-auto">
+                    <form name="dimensionesForm" class="mt-4">
+                        <div class="form-group form-row">
+                            <label for="txtAnchura">Anchura</label>
+                            <input type="text" class="form-control" name="txtAnchura" required />
+                            <div class="valid-feedback">OK!</div>
+                            <div class="invalid-feedback">Introduzca un número entero entre 1 y 20</div>
+                        </div>
+                        <div class="form-group form-row">
+                            <label for="txtAltura">Altura</label>
+                            <input type="text" class="form-control" name="txtAltura" required />
+                            <div class="valid-feedback">OK!</div>
+                            <div class="invalid-feedback">Introduzca un número entero entre 1 y 20</div>
+                        </div>
+                    </form>
+                </div>
+
+                <button class="btn btn-success mt-4" id="btnGenerar">Generar Tabla</button>
+                <button class="btn btn-danger mt-4" id="btnBorrar">Borrar Tabla</button>
+                <table class="table table-bordered table-success table-striped mx-auto mt-5" style="width: 500px;"
+                    id="tabla"></table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
