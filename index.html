@@ -14,40 +14,42 @@
     </style>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function () {
-            function isInt(value) {
-                return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
-            }
-            document.dimensionesForm.txtAnchura.addEventListener("keyup", (event) => {
-                if (!isInt(document.dimensionesForm.txtAnchura.value)
-                    || document.dimensionesForm.txtAnchura.value < 1 || document.dimensionesForm.txtAnchura.value > 20) {
-                    document.dimensionesForm.txtAnchura.classList.add('is-invalid');
-                    document.dimensionesForm.txtAnchura.classList.remove('is-valid');
-                    document.getElementById("btnGenerar").disabled = true;
+            const w = document.dimensionesForm.txtAnchura;
+            const h = document.dimensionesForm.txtAltura;
+            const g = document.getElementById("btnGenerar");
+            const b = document.getElementById("btnBorrar");
+            const t = document.getElementById("tabla");
+            isInt = (value) => !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
+            isControlOK = (control) => (!isInt(control.value) || control.value < 1 || control.value > 20) ? false : true;
+            w.addEventListener("keyup", (event) => {
+                if (isControlOK(w)) {
+                    w.classList.add('is-valid');
+                    w.classList.remove('is-invalid');
+                    if (isControlOK(h)) g.disabled = false;
                 } else {
-                    document.dimensionesForm.txtAnchura.classList.add('is-valid');
-                    document.dimensionesForm.txtAnchura.classList.remove('is-invalid');
-                    document.getElementById("btnGenerar").disabled = false;
+                    w.classList.add('is-invalid');
+                    w.classList.remove('is-valid');
+                    g.disabled = true;
                 }
             });
-            document.dimensionesForm.txtAltura.addEventListener("keyup", (event) => {
-                if (!isInt(document.dimensionesForm.txtAltura.value)
-                    || document.dimensionesForm.txtAltura.value < 1 || document.dimensionesForm.txtAltura.value > 20) {
-                    document.dimensionesForm.txtAltura.classList.add('is-invalid');
-                    document.dimensionesForm.txtAltura.classList.remove('is-valid');
-                    document.getElementById("btnGenerar").disabled = true;
+            h.addEventListener("keyup", (event) => {
+                if (isControlOK(h)) {
+                    h.classList.add('is-valid');
+                    h.classList.remove('is-invalid');
+                    if (isControlOK(w)) g.disabled = false;
                 } else {
-                    document.dimensionesForm.txtAltura.classList.add('is-valid');
-                    document.dimensionesForm.txtAltura.classList.remove('is-invalid');
-                    document.getElementById("btnGenerar").disabled = false;
+                    h.classList.add('is-invalid');
+                    h.classList.remove('is-valid');
+                    g.disabled = true;
                 }
             });
-            document.getElementById('btnGenerar').addEventListener('click', () => {
-                document.getElementById("tabla").innerHTML = [...Array(parseInt(document.dimensionesForm.txtAnchura.value)).keys()].map(x => x + 1).map(y => [...Array(parseInt(document.dimensionesForm.txtAltura.value)).keys()].map(x => "<td>" + (x + 1) * y + "</td>")).map(z => "<tr>" + z.join(" ") + "</tr>").join(" ");
-                document.getElementById("btnBorrar").disabled = false;
+            g.addEventListener('click', (event) => {
+                t.innerHTML = [...Array(parseInt(h.value)).keys()].map(x => x + 1).map(y => [...Array(parseInt(w.value)).keys()].map(x => "<td>" + (x + 1) * y + "</td>")).map(z => "<tr>" + z.join(" ") + "</tr>").join(" ");
+                b.disabled = false;
             });
-            document.getElementById('btnBorrar').addEventListener('click', () => {
-                document.getElementById("tabla").innerHTML = "";
-                document.getElementById("btnBorrar").disabled = true;
+            b.addEventListener('click', (event) => {
+                t.innerHTML = "";
+                b.disabled = true;
             });
         });
     </script>
@@ -65,6 +67,7 @@
                 <h6 class="text-muted text-monospace">Cuadrante de multiplicaciones dinámico</h6>
                 <h6 class="text-muted text-monospace">Procesamiento en entorno cliente con Javascript ES6</h6>
                 <h6 class="text-muted text-monospace">Con formulario generador de tabla y validaciones</h6>
+                <h6 class="text-muted text-monospace">Generación funcional de tabla.</h6>
             </div>
         </div>
         <div class="row justify-content-center">
